@@ -1,0 +1,7 @@
+tools:
+1. nslookup
+2. dnsrecon
+3. dig
+4. host
+5. dnsenum
+6. massdns

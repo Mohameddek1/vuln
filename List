@@ -1,0 +1,11 @@
+1.ShellShock
+2.Dirty Cow
+3. Telnet
+4. DNS
+5. Sparta
+6. Reconnoitre --> automate information gathering and service enumeration whilst creating a directory structure to store results, findings and exploits used for each host, recommended commands to execute and directory structures for storing loot and flags.
+7. jad -to decompile java files
+8. jd-gui - to decompile java files
+9. wpscan
+10. linux exploit suggester --> to find exploits for linux systems.
+11. scp --> to copy files/directories to the target system. using ssh
