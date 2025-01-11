@@ -9,3 +9,8 @@
 9. wpscan
 10. linux exploit suggester --> to find exploits for linux systems.
 11. scp --> to copy files/directories to the target system. using ssh
+12. python-pty-shells --> to create reverse shells using python
+13. MOTD --> 
+    -unauthorized information disclosure
+    -Code Injection in Dynamic MOTD Scripts
+    -Symbolic Link Attack

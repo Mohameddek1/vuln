@@ -1,0 +1,25 @@
+- A cron job is a scheduled task in Unix-like operating systems, used to automate repetitive tasks at specified intervals. It runs in the background and is managed by the cron daemon (crond)
+
+Crontab Syntax
+
+The crontab file defines when and what tasks should run. A crontab entry has the following format:
+
+* * * * * command-to-be-executed
+- - - - -
+| | | | |
+| | | | +---- Day of the week (0 - 7, Sunday is both 0 and 7)
+| | | +------ Month (1 - 12)
+| | +-------- Day of the month (1 - 31)
+| +---------- Hour (0 - 23)
++------------ Minute (0 - 59)
+
+
+crontab -l
+- Lists all cron jobs of the current user
+
+crontab -e
+- Edits the crontab file for the current user
+
+crontab -r
+- Removes all cron jobs for the current user
+
