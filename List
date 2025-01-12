@@ -14,3 +14,21 @@
     -unauthorized information disclosure
     -Code Injection in Dynamic MOTD Scripts
     -Symbolic Link Attack
+14. md5sum --> to verify the integrity of files
+15. sha256sum --> to verify the integrity of files
+16. sshng2john
+17. pentestmonkey reverse shell cheat sheet
+18. cron jobs ---> A cron job is a scheduled task in Unix-like operating systems, used to automate repetitive tasks at specified intervals. It runs in the background and is managed by the cron daemon (crond)
+19. curl injection attack  --> attackers often exploit improperly sanitized user inputs in applications where curl is used to fetch data from a URL.
+20. SUID Binary Attack --> A SUID binary is a file with the setuid bit set. This means that the file is owned by root and can be run with root privileges. SUID binaries are commonly used to escalate privileges.
+21. bit-flipping attack --> is a cryptographic attack where an attacker manipulates ciphertext to control how it decrypts into plaintext
+22. padding oracle attack 
+    - Finding a padding oracle involves testing how a system responds when invalid or tampered ciphertexts are sent. A system that leaks information about whether the padding is valid or invalid is vulnerable to a padding oracle attack.
+    - perl padBuster.pl --> to find the padding oracle attack
+    - indicators:
+        - Explicit Error Messages:
+            E.g., Invalid padding, Decryption failed, Bad padding.
+        - Behavioral Differences:
+            Different HTTP status codes (e.g., 500 for invalid padding, 200 for valid padding).
+        - Encrypted Tokens:
+            Modify a ciphertext token and see if the server reacts differently.
