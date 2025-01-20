@@ -1,0 +1,6 @@
+nmap:
+    -p- --> scan all ports
+    -sV --> service version detection
+    -sU --> service UDP scan
+    -sS --> service TCP scan
+    -oA --> output to a file

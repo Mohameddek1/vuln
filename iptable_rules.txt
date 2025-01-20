@@ -1,0 +1,157 @@
+1. File Location for Persistent Rules:
+    - On Debian-based systems (e.g., Ubuntu):
+    - /etc/iptables/rules.v4 (for IPv4) and /etc/iptables/rules.v6 (for IPv6).
+    - On Red Hat-based systems (e.g., CentOS, Fedora):
+    - /etc/sysconfig/iptables and /etc/sysconfig/ip6tables.
+
+2. Runtime Configuration:
+
+    - The active rules are stored in memory and can be listed with:
+        sudo iptables -L -v -n
+
+
+---------------------------------------
+`Key iptables Tables and Chains`
+---------------------------------------
+1. Tables:
+    - filter: Default table for packet filtering.
+    - nat: Handles NAT (e.g., SNAT, DNAT, and port forwarding).
+    - mangle: Alters packets (e.g., for QoS).
+    - raw: Exempts packets from connection tracking.
+
+2. Chains:
+    - INPUT: Controls incoming traffic to the local machine.
+    - OUTPUT: Controls outgoing traffic from the local machine.
+    - FORWARD: Controls traffic routed through the machine.
+
+`Example iptables Rules:`
+1. Blocking an IP Address
+    sudo iptables -A INPUT -s 192.168.1.100 -j DROP
+    -A INPUT: Appends the rule to the INPUT chain.
+    -s 192.168.1.100: Matches packets from source IP 192.168.1.100.
+    -j DROP: Drops the packet.
+2. Allowing SSH (Port 22)
+    sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+    -p tcp: Specifies the protocol (TCP).
+    --dport 22: Matches packets destined for port 22.
+    -j ACCEPT: Allows the packet.
+3. Port Forwarding (NAT Table)
+Redirect traffic from port 80 to port 8080:
+    sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
+    -t nat: Operates on the NAT table.
+    **PREROUTING**: Alters packets as they arrive.
+    --to-port 8080: Redirects traffic to port 8080.
+
+4. Logging Dropped Packets
+    sudo iptables -A INPUT -j LOG --log-prefix "Dropped Packet: " --log-level 4
+    sudo iptables -A INPUT -j DROP
+    Logs dropped packets with the prefix "Dropped Packet".
+
+5. Flushing All Rules
+    sudo iptables -F
+    Clears all rules from all chains.
+
+**Making iptables Rules Persistent**
+1. Debian-based Systems:
+    Save the current rules:
+        sudo iptables-save > /etc/iptables/rules.v4
+        sudo ip6tables-save > /etc/iptables/rules.v6
+    Ensure the iptables-persistent package is installed:
+        sudo apt install iptables-persistent
+
+2. Red Hat-based Systems:
+    Save the current rules:
+        sudo service iptables save
+    This saves the rules to /etc/sysconfig/iptables.
+    Restart iptables:
+        sudo service iptables restart
+
+3. Checking iptables Rules
+    To list the current rules:
+        sudo iptables -L -v -n
+    -L: Lists the rules in the chain.
+    -v: Shows detailed output (e.g., packet counts).
+    -n: Displays IPs and ports numerically.
+
+
+---------------------------------------
+`iptables Commands`
+---------------------------------------
+1. Delete a Specific Rule:
+        sudo iptables -D INPUT 1
+2. Deletes the first rule in the INPUT chain.
+        Flush Rules for a Chain:
+3. sudo iptables -F INPUT
+Restore Rules:
+    sudo iptables-restore < /etc/iptables/rules.v4
+
+
+---------------------------------------
+`Chains in the Filter Table`
+---------------------------------------
+The filter table has three predefined chains:
+    1. INPUT:
+    Handles packets destined for the local machine.
+    Example use case: Allowing SSH traffic to your machine.
+
+    2. FORWARD:
+    Handles packets that are routed through the machine (e.g., if the machine acts as a router).
+    Example use case: Controlling traffic between two networks connected to the machine.
+
+    3. OUTPUT:
+    Handles packets originating from the local machine.
+    Example use case: Allowing or blocking outgoing traffic to specific destinations.
+
+1. View Rules in the Filter Table
+    sudo iptables -L -t filter -v -n
+
+    -L: Lists rules.
+    -t filter: Specifies the filter table (optional because it’s the default table).
+    -v: Provides verbose output (e.g., packet and byte counts).
+    -n: Displays IPs and ports numerically.
+
+2. Allow Incoming SSH Traffic (Port 22)
+    sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+
+    -A INPUT: Appends the rule to the INPUT chain.
+    -p tcp: Matches the TCP protocol.
+    --dport 22: Matches packets destined for port 22 (SSH).
+    -j ACCEPT: Accepts the packets.
+
+3. Allow Outgoing HTTP and HTTPS Traffic
+    sudo iptables -A OUTPUT -p tcp -m multiport --dports 80,443 -j ACCEPT
+
+    -A OUTPUT: Appends the rule to the OUTPUT chain.
+    -m multiport: Allows matching multiple ports.
+    --dports 80,443: Matches packets destined for ports 80 (HTTP) and 443 (HTTPS).
+
+4. Block All Incoming Traffic from a Specific IP
+    sudo iptables -A INPUT -s 192.168.1.100 -j DROP
+
+    -s 192.168.1.100: Matches packets from the source IP 192.168.1.100.
+    -j DROP: Drops the packets without notifying the sender.
+
+5. Drop Forwarded Traffic Between Two Networks
+    sudo iptables -A FORWARD -s 192.168.1.0/24 -d 10.0.0.0/24 -j DROP
+
+    -A FORWARD: Appends the rule to the FORWARD chain.
+    -s 192.168.1.0/24: Matches packets from the source subnet 192.168.1.0/24.
+    -d 10.0.0.0/24: Matches packets destined for the subnet 10.0.0.0/24.
+    -j DROP: Drops the packets
+
+6. Allow Pinging the Local Machine
+    sudo iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+
+    -p icmp: Matches the ICMP protocol.
+    --icmp-type echo-request: Matches ICMP Echo Requests (used in ping).
+    -j ACCEPT: Allows the packets.
+
+7. Drop All Traffic by Default
+    - Set default policies for the filter table:
+
+        sudo iptables -P INPUT DROP
+        sudo iptables -P FORWARD DROP
+        sudo iptables -P OUTPUT DROP
+
+    -P: Sets the default policy for a chain.
+    `DROP`: Drops packets unless explicitly allowed by other rules.

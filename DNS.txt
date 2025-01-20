@@ -1,7 +1,13 @@
 tools:
 1. nslookup
+    server <ip>
+    <ip>
+    <domain>
 2. dnsrecon
 3. dig
+    dig axfr @<ip> <domain>
 4. host
 5. dnsenum
 6. massdns
+7. subjack  --> to manipulate and analyze DNS traffic.
+8. shodan

@@ -1,0 +1,21 @@
+`os` or `getpass` or `pwd` modules for getting the user.
+
+
+1. Using os Module
+
+import os
+current_user = os.getlogin()
+print(f"Current user: {current_user}")
+
+2. Using getpass Module
+
+import getpass
+current_user = getpass.getuser()
+print(f"Current user: {current_user}")
+
+3. Using pwd Module (Unix Only)
+
+import pwd
+import os
+current_user = pwd.getpwuid(os.getuid()).pw_name
+print(f"Current user: {current_user}")

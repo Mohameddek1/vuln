@@ -1,3 +1,5 @@
+`if there is an LFI or RFI vulnerability we can use this:`
+
 1.Crafting the Exploit through an Email using Telnet
 
 You can use Telnet to manually send an email to the target server with a malicious header or body. Here's how to do it:
