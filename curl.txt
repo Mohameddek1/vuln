@@ -1,0 +1,96 @@
+1. Saving Output to a File
+curl -o output.txt https://example.com
+curl -O https://example.com/file.zip
+
+- o: Save with a custom filename.
+- O: Save with the original filename from the URL.
+
+2. Following Redirects
+curl -L https://example.com
+
+- L: Follow redirects.
+
+3. Sending Post Requests
+curl -X POST https://example.com/login.php
+
+- X: Specify the request method.
+
+For JSON data:
+curl -X POST -H "Content-Type: application/json" -d '{"key1":"value1", "key2":"value2"}' https://example.com/api
+
+4. Adding Headers
+curl -H "User-Agent: Mozilla/5.0" https://example.com
+
+- H: Specify a header.
+
+5. Sending Files
+curl -F "file=@/path/to/file.txt" https://example.com/upload
+
+- F: Specify a file to upload.
+
+6. Verbose output
+curl -v https://example.com
+
+- v: Verbose output. in detail about the request and response.
+
+8. Limiting Download Speed
+curl --limit-rate 100K https://example.com
+
+- limit-rate: Limit the download speed.
+
+9. Ignoring SSL Certificates errors
+curl -k https://example.com
+
+- k: Ignore SSL certificate errors.
+
+10. Using Proxies
+curl --proxy http://proxy.example.com:8080 https://example.com
+curl -x http://proxy.example.com:8080 https://example.com
+- proxy: Use a proxy.
+
+11. Authentication
+curl -u username:password https://example.com
+
+12. Debugging
+curl --trace-ascii /path/to/trace.txt https://example.com
+
+- trace-ascii: Save the request and response to a file.
+
+13. Setting Timeouts
+curl --connect-timeout 10 --max-time 30 https://example.com
+
+- connect-timeout: Set the maximum time for the connection to be established.
+- max-time: Set the maximum time allowed for the transfer.
+
+14. Resuming a Download
+curl -C - -o file.txt https://example.com/file.zip
+
+- -C: Resume a download.
+- -o: Save the output to a file.
+
+15. Sending Cookies
+curl -b "name=value" https://example.com
+
+To load cookies from a file:
+curl -b cookies.txt https://example.com
+
+- -b: Send cookies.
+
+16. Saving Cookies
+curl -c cookies.txt https://example.com
+
+-c: Save cookies to a file.
+
+17. Using HTTP/2
+curl --http2 https://example.com
+
+18. Compressed Transfer
+curl --compressed https://example.com
+
+19. Silent Mode
+curl -s https://example.com
+
+20.Showing only errors
+curl -s -S https://example.com
+
+-S: Show only errors.

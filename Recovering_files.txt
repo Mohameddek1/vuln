@@ -1,0 +1,99 @@
+1. Using strings to Extract Text
+`strings <file>`
+
+- This can help you find text that was previously deleted but still exists in the file's data.
+
+2. Using xxd and grep to Search for Patterns
+`xxd <file> | grep '0000 0000 0000 0000 0000 0000 0000 0000'`
+
+- This can help identify areas of the file that have been zeroed out or contain specific patterns.
+
+3. Using grep to Search for Specific Patterns
+`grep '[a-z0-9]\{32\}' <file>`
+
+- This can help identify specific patterns or strings within the file.
+
+4. Using grep with Context Lines
+grep -a -B1 -A1 '[a-z0-9]\{32\}' <file>
+
+-a: Treats the file as text, even if it contains binary data.
+
+-B1: Displays 1 line before the match.
+
+-A1: Displays 1 line after the match.
+
+- This helps provide context around the matched pattern, which can be useful for understanding the data.
+
+5. Using dd to Extract Data
+`dd if=<file> of=<output-file> bs=1 skip=<offset> count=<length>`
+
+- If you suspect that the deleted text is still present in the file but not accessible through normal means, you can use dd to extract specific portions of the file.
+
+if: Input file.
+
+of: Output file.
+
+bs: Block size (1 byte in this case).
+
+skip: Number of bytes to skip from the beginning of the file.
+
+count: Number of bytes to copy.
+
+- This can help extract specific sections of the file for further analysis.
+
+6. Using hexdump for Manual Inspection
+`hexdump -C <file>`
+
+-C: Displays the output in hexadecimal and ASCII.
+
+- This allows you to manually search for patterns or deleted text.
+
+7. Using foremost for File Carving
+`foremost -i <file> -o <output_directory>`
+
+-i: Input file.
+
+-o: Output directory where recovered files will be saved.
+
+- `foremost` is a tool for recovering files based on their headers, footers, and internal data structures.
+- This tool can recover deleted files or text based on known file signatures.
+
+8. Using scalpel for File Carving
+`scalpel <file> -o <output_directory>`
+
+- scalpel is another file-carving tool that can recover deleted files or text.
+- scalpel uses a configuration file to define file signatures for recovery.
+- It scans the file and extracts data matching the defined signatures.
+ 
+9. Using binwalk for File Carving
+`binwalk -e <file>`
+
+- `binwalk` is a tool for recovering deleted files or text based on their headers, footers, and internal data structures.
+- It can recover deleted files or text based on known file signatures.
+
+
+10. Using dcfldd for File Carving
+`dcfldd if=<file> conv=noerror, sync | strings > recovered_files.txt`
+
+- conv=noerror,sync ensures reading continues despite errors.
+
+- dcfldd is a tool for recovering deleted files or text based on their headers, footers, and internal data structures.
+- It can recover deleted files or text based on known file signatures.
+
+
+11. Extracting Specific Sectors (Data Carving)
+`dcfldd if=<file>  of=<output_file>  bs=512 skip=10000 count=2000`
+
+bs=512 → Block size (depends on filesystem)
+skip=10000 → Start reading from sector 10000
+count=2000 → Copy 2000 sectors
+
+12. Wiping a Disk Securely (Before Disposal or Reuse)
+
+`dcfldd if=/dev/zero of=/dev/sdX bs=4096`
+
+- Overwrites the entire drive with zeros.
+- You can also use if=/dev/random for a more secure wipe.
+
+13. TestDisk for File Recovery
+`testdisk /dev/sdX`

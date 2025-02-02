@@ -1,0 +1,39 @@
+1. Basic DNS Query
+dig example.com
+
+2. Query a specific DNS server
+dig @8.8.8.8 example.com
+
+3. Query a specific Record Type
+dig example.com MX
+
+4. Short output
+dig +short example.com
+
+5. Show only the answer section
+dig +noall +answer example.com
+
+6. Trace DNS Resolution Path
+dig +trace example.com
+
+7. Reverse DNS Lookup
+dig -x 8.8.8.8
+
+8. Query TXT Records
+dig TXT example.com
+
+9. Query SOA Records
+dig SOA example.com
+
+10. Query CNAME Records
+dig CNAME example.com
+
+11. Use IPV6 or IPV4 only
+dig example.com A -4
+dig example.com AAAA -6
+
+12. Show Query Statistics
+dig +stats example.com
+
+13. Batch Queries
+dig -f domains.txt

